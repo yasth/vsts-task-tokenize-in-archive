@@ -11,6 +11,7 @@ try {
     $Prefix = Get-VstsInput -Name Prefix
     $Suffix = Get-VstsInput -Name Suffix
     $ReplaceWithEmpty = Get-VstsInput -Name ReplaceWithEmpty
+    $ActionOnMissing = Get-VstsInput -Name ActionOnMissing
     $isWindows = (Get-ChildItem -Path Env: | ? { $_.name -eq "OS" }).value  -eq "Windows_NT"
     Write-Verbose "PathToArchives = $PathToArchives" -Verbose
     Write-Verbose "Packages = $Packages" -Verbose
@@ -18,6 +19,7 @@ try {
     Write-Verbose "Prefix = $Prefix" -Verbose
     Write-Verbose "Suffix = $Suffix" -Verbose
     Write-Verbose "ReplaceWithEmpty = $ReplaceWithEmpty" -Verbose
+    Write-Verbose "ActionOnMissing = $ActionOnMissing" -Verbose
 
     # Dont think we should do this anymore
     if( $isWindows -eq $true ){
@@ -102,6 +104,15 @@ try {
                         else {
                             $value = $Match.Value
                             Write-Verbose "Variable '$($Match.Groups[1].Value)' not found. Kept token." -Verbose
+                        }
+                        switch($ActionOnMissing.ToLowerInvariant()){
+                            "continue" {}
+                            "warn" {Write-Host "##[warning]'$($Match.Groups[1].Value) not found"}
+                            "fail" {
+                                Write-Host "##[error]'$($Match.Groups[1].Value) not found"}
+                                exit 1
+                                }
+                            default {}
                         }
 
                     }

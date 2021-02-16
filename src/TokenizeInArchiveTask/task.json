@@ -1,7 +1,7 @@
 ﻿{
   "id": "3732d4b0-030f-4a01-9533-c5c39034359a",
-  "name": "TokenizeInArchiveTask",
-  "friendlyName": "Tokenize in Archive",
+  "name": "PLITokenizeInArchiveTask",
+  "friendlyName": "PLI Tokenize in Archive",
   "description": "Allows you to tokenize within an archive without unpacking.",
   "helpMarkDown": "[More Information](https://github.com/solidify/vsts-task-tokenize-in-archive)",
   "category": "Utility",
@@ -64,6 +64,20 @@
       "required": true,
       "defaultValue": "False",
       "helpMarkDown": "By default keeps the token, when checked then it will replace with empty values."
+    },
+    {
+      "name": "ActionOnMissing",
+      "type": "pickList",
+      "label": "Action",
+      "defaultValue": "warn",
+      "groupName": "missing",
+      "required": true,
+      "options": {
+          "continue": "silently continue",
+          "warn": "log warning",
+          "fail": "fail" 
+      },
+      "helpMarkDown": "Specify the action on a missing variable."
     }
   ],
   "instanceNameFormat": "Tokenize in $(FilesToTokenize) in $(Packages)",
